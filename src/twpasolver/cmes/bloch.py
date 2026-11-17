@@ -49,6 +49,7 @@ from twpasolver.bonus_types import ComplexArray, FloatArray
 from twpasolver.logger import log
 from twpasolver.models.twoportarrays import TwoPortArray
 from twpasolver.models.twpa_cells import PORT_IN, PORT_OUT, LCLfBaseCell, StubBaseCell
+from twpasolver.models.twpa_cells import LCLf_shuntLCladder_BaseCell
 
 # --------------------------------------------------------------------------- #
 # Linear part: unit cells, Bloch modes and intracell current profiles
@@ -68,6 +69,12 @@ def series_nl_elements(cell: Any) -> list[tuple[int, float]]:
     if callable(hook):
         return list(hook())
     if isinstance(cell, LCLfBaseCell):
+        # Shunt-first cell [Y][L]; centered variant is [L/2][Y][L/2].
+        L = cell.L * cell.nl_scale
+        if cell.centered:
+            return [(PORT_IN, L / 2), (PORT_OUT, L / 2)]
+        return [(PORT_OUT, L)]
+    if isinstance(cell, LCLf_shuntLCladder_BaseCell): #CS Added: the series element is the same in this case?
         # Shunt-first cell [Y][L]; centered variant is [L/2][Y][L/2].
         L = cell.L * cell.nl_scale
         if cell.centered:

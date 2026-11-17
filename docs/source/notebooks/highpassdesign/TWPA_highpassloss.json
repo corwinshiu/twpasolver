@@ -1,0 +1,66 @@
+{
+    "Z0_ref": 50.0,
+    "N": 1000,
+    "cells": [
+        {
+            "Z0_ref": 50.0,
+            "N": 15,
+            "name": "LCLfBaseCell",
+            "L": 6e-11,
+            "C": 2.63e-14,
+            "Lf": 3.6e-10,
+            "delta": 0.0,
+            "qp_loss": 0.0,
+            "nl_scale": 1.0,
+            "centered": false
+        },
+        {
+            "Z0_ref": 50.0,
+            "N": 4,
+            "name": "LCLfBaseCell",
+            "L": 6e-11,
+            "C": 9.9e-15,
+            "Lf": 1.17e-10,
+            "delta": 0.0,
+            "qp_loss": 0.0,
+            "nl_scale": 1.0,
+            "centered": false
+        },
+        {
+            "Z0_ref": 50.0,
+            "N": 1,
+            "name": "LCLf_shuntLCladder_BaseCell",
+            "L": 6e-11,
+            "C": 9.9e-15,
+            "Lf": 1.17e-10,
+            "shuntR": 15.0,
+            "shuntC": 3.0666666666666666e-13,
+            "shuntL1": 7.710000000000001e-11,
+            "shuntL2": 7.710000000000001e-11,
+            "delta": 0.0,
+            "centered": false
+        },
+        {
+            "Z0_ref": 50.0,
+            "N": 14,
+            "name": "LCLfBaseCell",
+            "L": 6e-11,
+            "C": 2.63e-14,
+            "Lf": 3.6e-10,
+            "delta": 0.0,
+            "qp_loss": 0.0,
+            "nl_scale": 1.0,
+            "centered": false
+        }
+    ],
+    "name": "TWPA",
+    "Istar": 0.0065,
+    "Idc": 0.001,
+    "Ip0": 0.0002,
+    "N_tot": 34000,
+    "epsilon": 46.24277456647399,
+    "xi": 23121.387283236996,
+    "chi": 0.00011560693641618498,
+    "alpha": 1.0236686390532543,
+    "Iratio": 0.15384615384615385
+}

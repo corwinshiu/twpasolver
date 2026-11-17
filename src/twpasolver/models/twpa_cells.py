@@ -15,6 +15,8 @@ from twpasolver.models.rf_functions import (
     inductance,
     series_impedance_abcd,
 )
+from twpasolver.models.rf_functions import LCLf_shuntLCladder_abcd
+
 from twpasolver.twoport import TwoPortModel
 
 required = partial(Field, ...)
@@ -127,4 +129,37 @@ class LCLfBaseCell(TwoPortModel):
                 self.Lf,
                 self.qp_loss,
             )
+        )
+
+
+
+class LCLf_shuntLCladder_BaseCell(TwoPortModel):
+
+    #This is a shunt highpass filter, where the first element in a shunt inductor
+    # --shuntL1 - seriesC - shuntL2 - shuntR
+
+    name: Literal["LCLf_shuntLCladder_BaseCell"] = "LCLf_shuntLCladder_BaseCell"
+    L: NonNegativeFloat = required(description="Inductance of the straight line.")
+    C: NonNegativeFloat = required(description="Capacitance of the stub finger.")
+    Lf: NonNegativeFloat = required(description="Inductance of the stub finger.")
+    shuntR: NonNegativeFloat = required(description="Termination resistance")
+    shuntC: NonNegativeFloat = required(description="Ladder cap.")
+    shuntL1: NonNegativeFloat = required(description="Ladder inductance.")
+    shuntL2: NonNegativeFloat = required(description="Ladder inductance.")
+
+    delta: NonNegativeFloat = Field(0, description="Loss Tangent")
+    centered: bool = False
+    nl_scale: NonNegativeFloat = Field(
+        1.0,
+        description=(
+            "Fraction of the line inductance L that is nonlinear: scales the nonlinear "
+            "elements of the bloch CMEs (not the linear response, nor the simple model)."
+        ),
+    )
+
+    def single_abcd(self, freqs: np.ndarray) -> ABCDArray:
+        """Compute abcd matrix."""
+
+        return ABCDArray(
+            LCLf_shuntLCladder_abcd(freqs, self.C * (1 - 1j * self.delta), self.L, self.Lf, self.shuntR, self.shuntC, self.shuntL1, self.shuntL2)
         )

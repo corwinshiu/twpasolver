@@ -132,6 +132,37 @@ def LCLf_abcd(
     return abcd
 
 
+@njit
+def LCLf_shuntLCladder_abcd(freqs: FloatArray, C: float, L: float, Lf: float, shuntR: float, shuntC: float, shuntL1: float, shuntL2:float) -> ComplexArray:
+    def par(A,B):
+        return (A*B)/(A + B)
+    assert np.real(C) >= 0
+    assert L >= 0
+    assert Lf >= 0
+    assert shuntR >= 0
+    assert shuntC >= 0
+    assert shuntL1 >= 0
+    assert shuntL2 >= 0
+
+
+    n_mat = len(freqs)
+    abcd = np.empty((n_mat, 2, 2), dtype=np.complex128)
+    for i in range(n_mat):
+        w = 2 * np.pi * freqs[i]
+
+        Zin1 = 1/(1j*w*shuntC) + par(1j*w*shuntL2, shuntR)
+        Zladder = par(1j*w*shuntL1, Zin1)
+        Ztotal = 1/(1j*w*C) + 1j*w*Lf + Zladder
+        Ytotal = 1/Ztotal*2 #Factor of two is so the transmission line is symmetric
+
+        
+        abcd[i, 0, 0] = 1
+        abcd[i, 0, 1] = 1j * L * w
+        abcd[i, 1, 0] = Ytotal
+        abcd[i, 1, 1] = 1 + 1j*w*L*Ytotal
+
+    return abcd
+
 @njit(cache=True)
 def get_stub_cell(
     freqs: FloatArray, C: complex, L: float, l1: float, l2: float

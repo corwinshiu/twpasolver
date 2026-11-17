@@ -60,3 +60,4 @@ from twpasolver.models.transmission_lines import LosslessTL
 from twpasolver.models.twpa_cells import LCLfBaseCell, StubBaseCell, PORT_IN, PORT_OUT
 from twpasolver.models.twoportarrays import TWPA, TwoPortArray
 from twpasolver.models.compose import compose
+from twpasolver.models.twpa_cells import LCLf_shuntLCladder_BaseCell
